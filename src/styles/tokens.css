@@ -1,0 +1,85 @@
+/*
+ * ScaleCanvas design tokens — "Blueprint" identity (PRD §4).
+ * Components must use these tokens (or the Tailwind utilities mapped to them), never raw hex.
+ * Light = "Drafting Paper", Dark = "Night Blueprint".
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Surfaces & text */
+  --bg: #f4f6fa;
+  --grid: #d9e2f0;
+  --grid-strong: #c3d1e8;
+  --surface: #ffffff;
+  --surface-2: #eef2f8;
+  --surface-glass: rgb(255 255 255 / 0.8);
+  --ink: #0e1a2e;
+  --ink-muted: #56667f;
+  --line: #d3dcea;
+
+  /* Signals */
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+  --accent-soft: rgb(37 99 235 / 0.12);
+  --ok: #16a34a;
+  --warn: #b45309;
+  --bad: #dc2626;
+  --info: #7c3aed;
+
+  /* Node categories (block top faces; sides are derived in the block component) */
+  --cat-client: #cbd5e1;
+  --cat-network: #fcd34d;
+  --cat-compute: #7dd3fc;
+  --cat-data: #c4b5fd;
+  --cat-messaging: #fdba74;
+  --cat-security: #fda4af;
+  --cat-observability: #86efac;
+
+  /* Elevation */
+  --shadow-panel: 0 1px 2px rgb(14 26 46 / 0.06), 0 8px 24px rgb(14 26 46 / 0.08);
+  --shadow-pop: 0 12px 40px rgb(14 26 46 / 0.18);
+
+  /* Shape & motion */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur-med: 260ms;
+  --dur-theme: 400ms;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: #0a1120;
+  --grid: #16233d;
+  --grid-strong: #1f3256;
+  --surface: #111b30;
+  --surface-2: #17233d;
+  --surface-glass: rgb(17 27 48 / 0.8);
+  --ink: #e6eefa;
+  --ink-muted: #8da0bf;
+  --line: #243556;
+
+  --accent: #38bdf8;
+  --accent-ink: #04121f;
+  --accent-soft: rgb(56 189 248 / 0.14);
+  --ok: #4ade80;
+  --warn: #fbbf24;
+  --bad: #f87171;
+  --info: #a78bfa;
+
+  --cat-client: #64748b;
+  --cat-network: #f59e0b;
+  --cat-compute: #0ea5e9;
+  --cat-data: #8b5cf6;
+  --cat-messaging: #f97316;
+  --cat-security: #f43f5e;
+  --cat-observability: #22c55e;
+
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.4), 0 10px 30px rgb(0 0 0 / 0.35);
+  --shadow-pop: 0 16px 48px rgb(0 0 0 / 0.55);
+}

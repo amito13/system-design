@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "home": "Home",
+    "learn": "Learn",
+    "practice": "Practice",
+    "lab": "Design Lab",
+    "cheatsheets": "Cheatsheets",
+    "settings": "Settings",
+    "main": "Main"
+  },
+  "header": {
+    "skip": "Skip to content",
+    "search": "Search",
+    "searchHint": "Search or jump to…",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "home": "{{name}} home",
+    "languageLabel": "Language:"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "scheduled": "Scheduled",
+    "toggle": "Theme: {{current}}. Switch to {{next}}",
+    "nightAt": "Night theme from {{from}} to {{to}}",
+    "showing": "Showing {{theme}}"
+  },
+  "home": {
+    "eyebrow": "Interactive system design",
+    "title": "Learn system design by moving the system.",
+    "pitch": "Every idea is a live diagram. Drag the load balancer, add a cache, break a zone — and watch latency, throughput and cost respond.",
+    "continueTitle": "Continue where you left off",
+    "continueEmpty": "You haven't started yet. Lesson 1 traces a single request across the network.",
+    "start": "Start lesson 1",
+    "sectionsTitle": "What's inside",
+    "learnBody": "40 step-by-step lessons on a canvas you can rearrange.",
+    "practiceBody": "Quizzes, estimates, fix-the-diagram drills and daily review.",
+    "labBody": "A sandbox with a traffic simulator, failure injection and graded challenges.",
+    "cheatsheetsBody": "One-page references and calculators you can print.",
+    "milestone": "Arrives in {{m}}",
+    "ready": "Ready"
+  },
+  "placeholder": {
+    "building": "Being built",
+    "body": "This screen is part of milestone {{m}}. The route, layout and theme are already wired up.",
+    "route": "Route",
+    "back": "Back to home"
+  },
+  "learn": {
+    "title": "Lesson player",
+    "lesson": "Lesson",
+    "step": "Step"
+  },
+  "practice": {
+    "title": "Practice"
+  },
+  "lab": {
+    "title": "Design Lab"
+  },
+  "cheatsheets": {
+    "title": "Cheatsheets"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "themeMode": "Theme",
+    "schedule": "Night schedule",
+    "from": "Dark from",
+    "to": "Light again at",
+    "scheduleHint": "In Scheduled mode the night theme turns on and off automatically at these local times.",
+    "systemHint": "Follows your device's light or dark setting.",
+    "motion": "Motion",
+    "motionFull": "Full",
+    "motionReduced": "Reduced",
+    "motionOff": "Off",
+    "motionHint": "Reduced keeps essential movement only. Your device's reduce-motion setting is always respected.",
+    "language": "Language",
+    "data": "Your data",
+    "dataHint": "Progress and preferences are stored only in this browser.",
+    "export": "Export",
+    "import": "Import",
+    "importMode": "When importing",
+    "merge": "Merge with current data",
+    "replace": "Replace current data",
+    "imported": "Imported {{count}} items.",
+    "importError": "That file isn't a ScaleCanvas export.",
+    "reset": "Reset everything",
+    "resetPrompt": "Type RESET to delete all progress and preferences in this browser.",
+    "resetConfirm": "Delete everything",
+    "resetDone": "Everything was reset.",
+    "cancel": "Cancel"
+  },
+  "notFound": {
+    "title": "Nothing at this address",
+    "body": "The link may be old or mistyped."
+  },
+  "command": {
+    "title": "Command menu",
+    "placeholder": "Type a command or page…",
+    "empty": "No matches.",
+    "navigate": "Go to",
+    "theme": "Theme",
+    "language": "Language",
+    "footer": "Full-text search across lessons arrives in milestone M4.",
+    "move": "move",
+    "open": "open",
+    "close": "close"
+  }
+}
