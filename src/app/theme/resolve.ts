@@ -15,7 +15,7 @@ export const DEFAULT_THEME_PREF: ThemePref = {
   darkTo: '06:00',
 };
 
-export const THEME_COLORS: Record<ResolvedTheme, string> = { light: '#f4f6fa', dark: '#0a1120' };
+export const THEME_COLORS: Record<ResolvedTheme, string> = { light: '#f4f6fa', dark: '#000000' };
 
 /**
  * Decide light or dark.

@@ -21,3 +21,9 @@ Decisions made where the PRD was silent or had to be adjusted. Newest first with
 | D13 | **Header search and language buttons use their visible text as the accessible name** ("Search or jump to… Ctrl K", "Language: EN (English)"). | axe `label-content-name-mismatch` (WCAG 2.5.3, label in name). |
 | D14 | **Shared component styles live in `@layer components` / `@layer base`.** | Unlayered CSS beats Tailwind utilities in v4; this bit us once (`kbd { display }` overrode `hidden`). |
 | D15 | **Accessibility gate = axe-core (WCAG 2.2 AA + best-practice) with zero violations** on every route in both themes, plus with the command menu and mobile drawer open. | No Chrome/Lighthouse binary on the build machine. Lighthouse's accessibility score is computed from axe-core, so zero axe violations is the stricter equivalent. Run real Lighthouse in CI when one is set up. |
+
+## Post-M0 changes
+
+| # | Decision | Why |
+|---|---|---|
+| D16 | **Dark theme is pure black with neutral greys** (2026-11-19): `--bg #000000`, `--surface #0A0A0A`, `--surface-2 #141414`, `--grid #121212`, `--grid-strong #1C1C1C`, `--line #262626`, `--ink #F2F2F2`, `--ink-muted #A1A1A1`, `--accent-ink #000000`. The cyan accent and signal colors are unchanged. PRD §4.3 updated to match. | Owner asked for a completely black dark mode instead of navy. |

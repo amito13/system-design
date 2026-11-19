@@ -115,7 +115,7 @@ Top nav: **Learn · Practice · Design Lab · Cheatsheets**, then Search, Langua
 The product should feel like an engineer's drafting table: precise grid, crisp blocks, glowing signal colors on the data paths. It must look clearly different from the reference's warm sand notebook.
 
 - **Light theme — "Drafting Paper":** cool off-white paper, faint blue grid, ink-navy text.
-- **Dark theme — "Night Blueprint" (default after 8 PM):** deep navy, cyan grid lines, glowing packets.
+- **Dark theme — "Night Blueprint" (default after 8 PM):** pure black background with neutral grey surfaces and grid, glowing cyan packets.
 - Isometric 2.5D blocks with flat faces (top lighter, two side faces darker), a 1.5 px ink outline and a soft drop shadow on the grid.
 - Motion: springy and quick (180–320 ms UI; packets at a constant world speed). Respect `prefers-reduced-motion` (§13).
 
@@ -139,16 +139,16 @@ Define in `:root` (light) and `[data-theme="dark"]`. Components use tokens only 
 
 | Token | Light | Dark | Use |
 |---|---|---|---|
-| `--bg` | `#F4F6FA` | `#0A1120` | App and canvas background |
-| `--grid` | `#D9E2F0` | `#16233D` | Minor grid |
-| `--grid-strong` | `#C3D1E8` | `#1F3256` | Major grid (every 5th line) |
-| `--surface` | `#FFFFFF` | `#111B30` | Floating panels |
-| `--surface-2` | `#EEF2F8` | `#17233D` | Inset areas, inputs |
-| `--ink` | `#0E1A2E` | `#E6EEFA` | Primary text, outlines |
-| `--ink-muted` | `#5A6A85` | `#8DA0BF` | Secondary text |
-| `--line` | `#D3DCEA` | `#243556` | Borders, dividers |
+| `--bg` | `#F4F6FA` | `#000000` | App and canvas background |
+| `--grid` | `#D9E2F0` | `#121212` | Minor grid |
+| `--grid-strong` | `#C3D1E8` | `#1C1C1C` | Major grid (every 5th line) |
+| `--surface` | `#FFFFFF` | `#0A0A0A` | Floating panels |
+| `--surface-2` | `#EEF2F8` | `#141414` | Inset areas, inputs |
+| `--ink` | `#0E1A2E` | `#F2F2F2` | Primary text, outlines |
+| `--ink-muted` | `#5A6A85` | `#A1A1A1` | Secondary text |
+| `--line` | `#D3DCEA` | `#262626` | Borders, dividers |
 | `--accent` | `#2563EB` | `#38BDF8` | Primary actions, focus ring, selection |
-| `--accent-ink` | `#FFFFFF` | `#04121F` | Text on accent |
+| `--accent-ink` | `#FFFFFF` | `#000000` | Text on accent |
 | `--ok` | `#16A34A` | `#4ADE80` | Healthy, solved, responses |
 | `--warn` | `#D97706` | `#FBBF24` | Warning, trade-off |
 | `--bad` | `#DC2626` | `#F87171` | Errors, failures, problem |

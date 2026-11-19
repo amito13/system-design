@@ -1,7 +1,7 @@
 /*
  * ScaleCanvas design tokens — "Blueprint" identity (PRD §4).
  * Components must use these tokens (or the Tailwind utilities mapped to them), never raw hex.
- * Light = "Drafting Paper", Dark = "Night Blueprint".
+ * Light = "Drafting Paper", Dark = "Night Blueprint" (pure black + neutral greys).
  */
 
 :root {
@@ -54,18 +54,18 @@
 :root[data-theme='dark'] {
   color-scheme: dark;
 
-  --bg: #0a1120;
-  --grid: #16233d;
-  --grid-strong: #1f3256;
-  --surface: #111b30;
-  --surface-2: #17233d;
-  --surface-glass: rgb(17 27 48 / 0.8);
-  --ink: #e6eefa;
-  --ink-muted: #8da0bf;
-  --line: #243556;
+  --bg: #000000;
+  --grid: #121212;
+  --grid-strong: #1c1c1c;
+  --surface: #0a0a0a;
+  --surface-2: #141414;
+  --surface-glass: rgb(10 10 10 / 0.8);
+  --ink: #f2f2f2;
+  --ink-muted: #a1a1a1;
+  --line: #262626;
 
   --accent: #38bdf8;
-  --accent-ink: #04121f;
+  --accent-ink: #000000;
   --accent-soft: rgb(56 189 248 / 0.14);
   --ok: #4ade80;
   --warn: #fbbf24;

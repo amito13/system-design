@@ -38,7 +38,7 @@ describe('theme boot script (no-flash)', () => {
 
   it('defaults to scheduled: dark at 20:00', () => {
     vi.setSystemTime(new Date(2026, 10, 19, 20, 0));
-    expect(runBoot()).toMatchObject({ theme: 'dark', color: '#0a1120', motion: 'full' });
+    expect(runBoot()).toMatchObject({ theme: 'dark', color: '#000000', motion: 'full' });
   });
 
   it('defaults to scheduled: light at 19:59', () => {
