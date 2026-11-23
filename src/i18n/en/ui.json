@@ -41,7 +41,9 @@
     "cheatsheetsBody": "One-page references and calculators you can print.",
     "milestone": "Arrives in {{m}}",
     "ready": "Ready",
-    "playgroundLink": "Try the canvas playground: drag the blocks"
+    "playgroundLink": "Try the canvas playground: drag the blocks",
+    "continue": "Continue",
+    "learnReady": "{{n}} lesson ready"
   },
   "placeholder": {
     "building": "Being built",
@@ -52,7 +54,79 @@
   "learn": {
     "title": "Lesson player",
     "lesson": "Lesson",
-    "step": "Step"
+    "step": "Step",
+    "stepOf": "Step {{n}} of {{total}}",
+    "lessonOf": "Lesson {{n}} of {{total}}",
+    "minutes": "{{n}} min",
+    "steps": "{{n}} steps",
+    "level": {
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "type": {
+      "setup": "Setup",
+      "problem": "Problem",
+      "solution": "Solution",
+      "technique": "Technique",
+      "tradeoff": "Trade-off",
+      "insight": "Insight",
+      "recap": "Recap"
+    },
+    "callout": {
+      "insight": "Key idea",
+      "warn": "Watch out",
+      "tip": "Good to know",
+      "next": "Coming up"
+    },
+    "whatChanged": "What changed",
+    "back": "Back",
+    "next": "Next",
+    "nextStep": "Next: {{title}}",
+    "nextLesson": "Next lesson: {{title}}",
+    "finish": "Back to the course",
+    "youllLearn": "You'll learn",
+    "inThisLesson": "In this lesson",
+    "course": "Course",
+    "lessonsCount": "{{n}} lessons",
+    "progress": "Progress",
+    "soon": "soon",
+    "completed": "Completed",
+    "takeaways": "Takeaways",
+    "quiz": "Take the quiz",
+    "openLab": "Open in Design Lab",
+    "lessonDone": "Lesson complete — nice work.",
+    "shortcuts": "Keyboard shortcuts",
+    "shortcutHint": "step",
+    "replayHint": "replay",
+    "pauseHint": "pause",
+    "moreHint": "more",
+    "toggleTree": "Course outline",
+    "togglePanel": "Step panel",
+    "focusMode": "Focus mode",
+    "exitFocus": "Exit focus mode",
+    "showStep": "Show step {{n}} of {{total}}",
+    "comingTitle": "This lesson is being written",
+    "comingBody": "Its content arrives in milestone M3. The first lesson is ready now.",
+    "startFirst": "Go to lesson 1",
+    "loading": "Loading lesson…",
+    "glossary": "Definition of {{term}}",
+    "resizeSheet": "Resize the step panel",
+    "keys": {
+      "steps": "Next / previous step",
+      "pause": "Pause / play",
+      "replay": "Replay traffic",
+      "focus": "Focus mode",
+      "panels": "Course outline / step panel",
+      "minimap": "Minimap",
+      "text": "Diagram as text",
+      "lock": "Lock layout",
+      "reset": "Reset layout",
+      "undo": "Undo a move",
+      "search": "Search",
+      "help": "This list"
+    },
+    "metrics": "Live metrics"
   },
   "practice": {
     "title": "Practice"

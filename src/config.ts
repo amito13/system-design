@@ -5,7 +5,7 @@ export const APP_VERSION = '0.0.1';
 
 /** Milestone each section ships in (PRD §15). Used by placeholder screens until they're built. */
 export const SECTION_MILESTONE = {
-  learn: 'M2',
+  learn: 'M3',
   practice: 'M7',
   lab: 'M5',
   cheatsheets: 'M8',

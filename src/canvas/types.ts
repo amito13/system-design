@@ -74,6 +74,21 @@ export interface Callout {
   tone?: 'neutral' | 'ok' | 'warn' | 'bad';
 }
 
+/** A card on the canvas (e.g. a "where the time went" table). Draggable; remembered as `panel:<id>`. */
+export interface CanvasPanel {
+  id: string;
+  /** Node to sit next to (position = node centre + offset)… */
+  anchor?: string;
+  offset?: Vec;
+  /** …or an absolute world position. */
+  pos?: Vec;
+  title: string;
+  rows: [string, string][];
+  /** Index of a row to emphasise (e.g. the total). */
+  highlightRow?: number;
+  note?: string;
+}
+
 export interface Frame {
   id: string;
   label: string;
@@ -86,6 +101,7 @@ export interface Scene {
   flows?: Flow[];
   callouts?: Callout[];
   frames?: Frame[];
+  panels?: CanvasPanel[];
   /** Node ids to fit the camera to when the step opens. */
   focus?: string[];
 }

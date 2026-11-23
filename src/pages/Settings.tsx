@@ -8,6 +8,7 @@ import { Panel } from '../components/Panel';
 import { LANGUAGES } from '../lib/languages';
 import { storage } from '../lib/storage';
 import { usePrefs, type MotionPref } from '../store/prefs';
+import { useProgress } from '../store/progress';
 
 const THEME_MODES: ThemeMode[] = ['light', 'dark', 'system', 'scheduled'];
 const MOTIONS: MotionPref[] = ['full', 'reduced', 'off'];
@@ -96,6 +97,7 @@ export function Settings() {
     try {
       const count = storage.importAll(JSON.parse(await file.text()), importMode);
       prefs.reload();
+      useProgress.getState().reload();
       setStatus(t('settings.imported', { count }));
     } catch {
       setStatus(t('settings.importError'));
@@ -107,6 +109,7 @@ export function Settings() {
   const resetAll = () => {
     storage.clearAll();
     prefs.reload();
+    useProgress.getState().reload();
     setResetOpen(false);
     setResetText('');
     setStatus(t('settings.resetDone'));

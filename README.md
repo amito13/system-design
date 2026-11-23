@@ -8,8 +8,9 @@ An interactive system-design course on a live, draggable canvas. Full spec: [PRD
 |---|---|
 | **M0 Foundations** — tooling, tokens, fonts, Light/Dark/System/Scheduled themes (night at 20:00), app shell, routing, storage, i18n (EN + HI), Settings | ✅ Done |
 | **M1 Canvas engine** — draggable isometric blocks, live floating edges, packet animation, undo/redo, layout memory, snap + guides, minimap, touch gestures, keyboard + screen-reader support | ✅ Done — try it at `#/playground` |
-| M2 Lesson player | Next |
-| M3–M9 | Not started |
+| **M2 Lesson player** — lesson schema + validation, step panel, live HUD, step timeline, recap with canvas table, progress, keyboard, focus mode, phone bottom sheet; **lesson 1 fully written** | ✅ Done — `#/learn/request-journey/1` |
+| M3 Curriculum (lessons 2–40) | Next |
+| M4–M9 | Not started |
 
 ## Run it
 
@@ -31,6 +32,7 @@ Then open http://127.0.0.1:5173.
 | `npm test` | Unit tests (Vitest + jsdom) |
 | `npm run typecheck` | TypeScript only |
 | `npm run format` | Prettier |
+| `npm run validate:content` | Check every lesson file (schema, ids, hops, overlaps, glossary) |
 
 ## Where things live
 
@@ -56,12 +58,22 @@ src/
     PacketLayer.tsx        pooled SVG packets, written every frame without React
     nodes/ edges/          isometric block, zone frame, floating data edge
     demoScenes.ts          the 4-step playground scene
-  pages/                   Home, Settings, Playground, SectionPlaceholder, NotFound
+  content/                 lesson types, `extends` resolver, validator (tests only), step markup parser
+  learn/                   lesson player: LessonPlayer, StepPanel, Hud, CourseTree, BottomSheet, …
+  pages/                   Home, Learn, Settings, Playground, SectionPlaceholder, NotFound
   store/prefs.ts           theme, language, motion, panel preferences (zustand, persisted)
   lib/                     storage.ts (sc: keys, try/catch, export/import), i18n.ts, languages.ts
   i18n/{en,hi}/ui.json     UI strings
   styles/                  tokens.css (both themes), app.css (Tailwind mapping, base, background)
 ```
+
+## Writing a lesson
+
+1. Add `content/lessons/<id>.json` (the id must already be in `content/curriculum.json`). Copy `request-journey.json` as a template.
+2. Each step has a `type`, `title`, `body` (blank line = new paragraph; `**bold**`, `` `code` ``, `[[term|label]]`), an optional `callout`, and a `scene`. A step can `extend` an earlier step and change only what differs (nodes/edges merge by id; `remove` drops ids).
+3. HUD numbers go in `scene.hud`; "what changed" is computed from them.
+4. Glossary terms live in `content/glossary.json`.
+5. Run `npm run validate:content` until it's green.
 
 ## Canvas shortcuts (when the canvas has focus)
 

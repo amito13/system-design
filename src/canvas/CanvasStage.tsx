@@ -16,11 +16,13 @@ import {
 import {
   useCallback,
   useEffect,
+  useImperativeHandle,
   useMemo,
   useReducer,
   useRef,
   useState,
   type ReactNode,
+  type Ref,
 } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CanvasToolbar } from './CanvasToolbar';
@@ -45,14 +47,34 @@ import {
 } from './layout';
 import { FrameNode, type FrameRFNode } from './nodes/FrameNode';
 import { IsoNode, type IsoRFNode } from './nodes/IsoNode';
+import { PANEL_WIDTH, PanelNode, panelHeight, type PanelRFNode } from './nodes/PanelNode';
 import { Overlays } from './Overlays';
 import { PacketLayer } from './PacketLayer';
-import type { LayoutOverrides, Scene, SceneEdge, SceneNode, Vec } from './types';
+import type { CanvasPanel, LayoutOverrides, Scene, SceneEdge, SceneNode, Vec } from './types';
 import { useTouchGestures } from './useTouchGestures';
 
-type AnyNode = IsoRFNode | FrameRFNode;
+type AnyNode = IsoRFNode | FrameRFNode | PanelRFNode;
 
-const nodeTypes = { iso: IsoNode, frame: FrameNode };
+const nodeTypes = { iso: IsoNode, frame: FrameNode, panel: PanelNode };
+const isPanelId = (id: string) => id.startsWith('panel:');
+
+/** Centre of a canvas panel: next to its anchor block, or at its own position. */
+function panelDefault(p: CanvasPanel, positions: Map<string, Vec>): Vec {
+  const a = p.anchor ? positions.get(p.anchor) : undefined;
+  if (a) return { x: a.x + (p.offset?.x ?? 0), y: a.y + (p.offset?.y ?? 0) };
+  return p.pos ?? { x: 0, y: 0 };
+}
+
+/** Imperative controls, so a page can drive the canvas from its own shortcuts and buttons. */
+export interface CanvasHandle {
+  togglePause: () => void;
+  replay: () => void;
+  toggleMinimap: () => void;
+  toggleText: () => void;
+  toggleLock: () => void;
+  requestReset: () => void;
+  fit: () => void;
+}
 const edgeTypes = { data: DataEdge };
 const NODE_ORIGIN: [number, number] = [0.5, 0.5];
 const SNAP: [number, number] = [20, 20];
@@ -80,6 +102,12 @@ export interface CanvasStageProps {
   className?: string;
   /** Extra floating UI (lesson panels, HUD…) rendered over the canvas. */
   children?: ReactNode;
+  /** Imperative controls (pause, replay, …). */
+  controlRef?: Ref<CanvasHandle>;
+  /** Called on the first pointer interaction with the canvas. */
+  onInteract?: () => void;
+  /** Pixels of the stage edges covered by docked UI; the built-in toolbar/minimap move aside. */
+  chromeInsets?: { left?: number; right?: number; bottom?: number };
 }
 
 export function CanvasStage(props: CanvasStageProps) {
@@ -111,6 +139,9 @@ function StageInner({
   safeArea,
   className = '',
   children,
+  controlRef,
+  onInteract,
+  chromeInsets,
 }: CanvasStageProps) {
   const { t, i18n } = useTranslation();
   const rf = useReactFlow<AnyNode, DataRFEdge>();
@@ -124,6 +155,8 @@ function StageInner({
 
   const [nodes, setNodes] = useState<IsoRFNode[]>([]);
   const [edges, setEdges] = useState<DataRFEdge[]>([]);
+  /** Live positions of canvas panels moved this session (persisted ones live in overrides). */
+  const [panelPos, setPanelPos] = useState<Record<string, Vec>>({});
   const [locked, setLocked] = useState(false);
   const [snap, setSnap] = useState(true);
   const [altHeld, setAltHeld] = useState(false);
@@ -199,7 +232,11 @@ function StageInner({
 
   /** Set node positions, optionally tweened on the canvas clock (pauses with it). */
   const setPositions = useCallback(
-    (targets: Map<string, Vec>, ms = 0) => {
+    (all: Map<string, Vec>, ms = 0) => {
+      const panelTargets = [...all].filter(([id]) => isPanelId(id));
+      if (panelTargets.length)
+        setPanelPos((cur) => ({ ...cur, ...Object.fromEntries(panelTargets) }));
+      const targets = new Map([...all].filter(([id]) => !isPanelId(id)));
       if (targets.size === 0) return;
       const instant = ms <= 0 || motion !== 'full' || clock.paused;
       if (instant) {
@@ -238,7 +275,9 @@ function StageInner({
       if (!p) continue;
       const without = { ...ov };
       delete without[id];
-      const def = layoutFor(sc, si, without).get(id);
+      const layout = layoutFor(sc, si, without);
+      const panel = isPanelId(id) ? sc[si]?.panels?.find((x) => `panel:${x.id}` === id) : undefined;
+      const def = panel ? panelDefault(panel, layout) : layout.get(id);
       if (def && near(def, p)) delete ov[id];
       else ov[id] = round(p);
     }
@@ -327,6 +366,16 @@ function StageInner({
         minY = Math.min(minY, r.y - (n.load !== undefined || n.badge ? 46 : 12));
         maxY = Math.max(maxY, r.y + r.h + 30);
       }
+      if (!ids?.length) {
+        for (const p of s.panels ?? []) {
+          const c = overridesRef.current[`panel:${p.id}`] ?? panelDefault(p, pos);
+          const h2 = panelHeight(p) / 2;
+          minX = Math.min(minX, c.x - PANEL_WIDTH / 2 - 16);
+          maxX = Math.max(maxX, c.x + PANEL_WIDTH / 2 + 16);
+          minY = Math.min(minY, c.y - h2 - 16);
+          maxY = Math.max(maxY, c.y + h2 + 16);
+        }
+      }
       const vp = getViewportForBounds(
         { x: minX, y: minY, width: maxX - minX, height: maxY - minY },
         w,
@@ -378,6 +427,7 @@ function StageInner({
       history.current.clear();
       bumpHistory();
       engine.clear();
+      setPanelPos({});
     }
     const prevNodes = keyChanged ? [] : nodesRef.current;
     const prev = new Map(prevNodes.filter((n) => n.data.phase !== 'exit').map((n) => [n.id, n]));
@@ -549,7 +599,37 @@ function StageInner({
   }, [nodes, scene]);
   const frameIds = useRef<string[]>([]);
   frameIds.current = frameNodes.map((f) => f.id);
-  const allNodes = useMemo<AnyNode[]>(() => [...frameNodes, ...nodes], [frameNodes, nodes]);
+  // ---------- canvas panels (draggable cards; position remembered as panel:<id>) ----------
+
+  const panelNodes = useMemo<PanelRFNode[]>(() => {
+    const centres = new Map(
+      nodes.filter((n) => n.data.phase !== 'exit').map((n) => [n.id, n.position]),
+    );
+    return (scene?.panels ?? []).map((p) => {
+      const id = `panel:${p.id}`;
+      const h = panelHeight(p);
+      return {
+        id,
+        type: 'panel' as const,
+        position: panelPos[id] ?? overridesRef.current[id] ?? panelDefault(p, centres),
+        width: PANEL_WIDTH,
+        height: h,
+        measured: { width: PANEL_WIDTH, height: h },
+        draggable: !locked,
+        selectable: false,
+        focusable: false,
+        zIndex: 2,
+        data: { panel: p },
+      };
+    });
+  }, [scene, nodes, panelPos, locked]);
+  const panelIds = useRef<string[]>([]);
+  panelIds.current = panelNodes.map((p) => p.id);
+
+  const allNodes = useMemo<AnyNode[]>(
+    () => [...frameNodes, ...nodes, ...panelNodes],
+    [frameNodes, nodes, panelNodes],
+  );
 
   // Snap block *centres* to the grid while dragging (React Flow would snap the top-left corner,
   // so blocks of different sizes could never line up). Alt drags freely.
@@ -557,6 +637,14 @@ function StageInner({
   snapRef.current = snap && !altHeld;
   const onNodesChange = useCallback((changes: NodeChangeset<AnyNode>) => {
     for (const id of frameIds.current) changes.removeForNode(id);
+    const panelMoves: Record<string, Vec> = {};
+    for (const id of panelIds.current) {
+      for (const c of changes.getForNode(id)) {
+        if (c.type === 'position' && c.position) panelMoves[id] = c.position;
+      }
+      changes.removeForNode(id);
+    }
+    if (Object.keys(panelMoves).length) setPanelPos((cur) => ({ ...cur, ...panelMoves }));
     if (snapRef.current) {
       for (const c of changes) {
         // React Flow only emits position changes for user drags (our own moves bypass this).
@@ -575,7 +663,9 @@ function StageInner({
 
   const onNodeDragStart: OnNodeDrag<AnyNode> = useCallback((_e, _n, dragged) => {
     const isos = dragged.filter((n) => n.type === 'iso');
-    dragStart.current = new Map(isos.map((n) => [n.id, { ...n.position }]));
+    dragStart.current = new Map(
+      dragged.filter((n) => n.type !== 'frame').map((n) => [n.id, { ...n.position }]),
+    );
     setGhostIds(isos.map((n) => n.id));
     setInspectId(null);
     setHoverId(null);
@@ -593,12 +683,21 @@ function StageInner({
     (_e, _n, dragged) => {
       setGuides(NO_GUIDES);
       setGhostIds([]);
-      settle(
-        dragged.filter((n) => n.type === 'iso').map((n) => n.id),
-        dragStart.current,
-      );
+      const isoIds = dragged.filter((n) => n.type === 'iso').map((n) => n.id);
+      if (isoIds.length) settle(isoIds, dragStart.current);
+      const moved = dragged
+        .filter((n) => n.type === 'panel' && dragStart.current.has(n.id))
+        .map((n) => ({ id: n.id, from: dragStart.current.get(n.id)!, to: round(n.position) }));
+      if (moved.length) {
+        history.current.push(moved);
+        commitOverrides(
+          moved.map((m) => m.id),
+          new Map(moved.map((m) => [m.id, m.to])),
+        );
+        bumpHistory();
+      }
     },
-    [settle],
+    [settle, commitOverrides],
   );
 
   // ---------- history / layout commands ----------
@@ -631,13 +730,18 @@ function StageInner({
           n.data.phase !== 'exit' && defaults.has(n.id) && !near(n.position, defaults.get(n.id)!),
       )
       .map((n) => ({ id: n.id, from: n.position, to: defaults.get(n.id)! }));
+    for (const p of sc[si]?.panels ?? []) {
+      const id = `panel:${p.id}`;
+      const from = panelPos[id] ?? overridesRef.current[id];
+      if (from) moves.push({ id, from, to: panelDefault(p, defaults) });
+    }
     overridesRef.current = {};
     saveOverrides(key, {});
     history.current.push(moves);
     bumpHistory();
     setPositions(new Map(moves.map((m) => [m.id, m.to])), 400);
     setLiveMsg(t('canvas.layoutReset'));
-  }, [setPositions, t]);
+  }, [setPositions, t, panelPos]);
 
   const keyboardMove = useCallback(
     (dx: number, dy: number) => {
@@ -685,6 +789,20 @@ function StageInner({
     if (s) engine.setScene(s.flows ?? [], s.edges ?? []);
   }, [engine]);
 
+  useImperativeHandle(
+    controlRef,
+    () => ({
+      togglePause: () => setPaused((p) => !p),
+      replay,
+      toggleMinimap: () => setMinimap((v) => !v),
+      toggleText: () => setShowText((v) => !v),
+      toggleLock: () => setLocked((v) => !v),
+      requestReset: () => setResetOpen(true),
+      fit: () => fit(undefined),
+    }),
+    [replay, fit],
+  );
+
   const selectOnly = useCallback((id: string) => {
     setNodes((ns) =>
       ns.map((n) => (n.selected === (n.id === id) ? n : { ...n, selected: n.id === id })),
@@ -696,6 +814,9 @@ function StageInner({
   const onKeyDown = (e: React.KeyboardEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest('input, textarea, select, [role="dialog"]')) return;
+    // Only keys aimed at the canvas itself (a block, the pane, the stage) — not at floating UI
+    // such as a lesson's step panel or the toolbar, whose buttons need their own keys.
+    if (target !== rootRef.current && !target.closest('.sc-flow')) return;
     const mod = e.ctrlKey || e.metaKey;
     const k = e.key;
 
@@ -932,11 +1053,17 @@ function StageInner({
       <div
         ref={rootRef}
         className={`sc-stage ${paused ? 'sc-paused' : ''} ${locked ? 'is-locked' : ''} ${className}`}
+        style={{
+          ['--sc-inset-left' as string]: `${chromeInsets?.left ?? 0}px`,
+          ['--sc-inset-right' as string]: `${chromeInsets?.right ?? 0}px`,
+          ['--sc-inset-bottom' as string]: `${chromeInsets?.bottom ?? 0}px`,
+        }}
         role="region"
         aria-roledescription={t('canvas.roleDescription')}
         aria-label={t('canvas.label')}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
+        onPointerDown={onInteract}
       >
         <svg width="0" height="0" className="absolute" aria-hidden="true" focusable="false">
           <defs>
@@ -1031,7 +1158,9 @@ function StageInner({
               nodeClassName={(n) =>
                 n.type === 'frame'
                   ? 'sc-mm-frame'
-                  : `sc-mm-${kindDef((n as IsoRFNode).data.node.kind).category}`
+                  : n.type === 'panel'
+                    ? 'sc-mm-panel'
+                    : `sc-mm-${kindDef((n as IsoRFNode).data.node.kind).category}`
               }
             />
           )}

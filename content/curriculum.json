@@ -1,0 +1,116 @@
+{
+  "modules": [
+    {
+      "id": "foundations",
+      "num": "01",
+      "title": "Foundations",
+      "color": "client",
+      "lessons": [
+        { "id": "request-journey", "title": "The Life of a Request" },
+        { "id": "latency-throughput", "title": "Latency vs Throughput" },
+        { "id": "back-of-envelope", "title": "Back-of-Envelope Estimates" }
+      ]
+    },
+    {
+      "id": "scaling",
+      "num": "02",
+      "title": "Scaling",
+      "color": "compute",
+      "lessons": [
+        { "id": "scale-up-out", "title": "Scale Up or Scale Out" },
+        { "id": "load-balancers", "title": "Load Balancers" },
+        { "id": "stateless", "title": "Stateless Services" },
+        { "id": "caching", "title": "Caching" },
+        { "id": "cdn", "title": "CDNs & the Edge" }
+      ]
+    },
+    {
+      "id": "data",
+      "num": "03",
+      "title": "Data & Storage",
+      "color": "data",
+      "lessons": [
+        { "id": "sql-nosql", "title": "Choosing a Database" },
+        { "id": "indexes", "title": "Indexes" },
+        { "id": "storage-engines", "title": "Inside a Storage Engine" },
+        { "id": "replication", "title": "Replication" },
+        { "id": "sharding", "title": "Sharding" },
+        { "id": "consistent-hashing", "title": "Consistent Hashing" },
+        { "id": "unique-ids", "title": "IDs at Scale" },
+        { "id": "cap-consistency", "title": "CAP & Consistency" },
+        { "id": "consensus", "title": "Consensus & Leader Election" },
+        { "id": "transactions", "title": "Transactions & Isolation" },
+        { "id": "blob-storage", "title": "Files & Media" }
+      ]
+    },
+    {
+      "id": "communication",
+      "num": "04",
+      "title": "Communication",
+      "color": "messaging",
+      "lessons": [
+        { "id": "api-styles", "title": "REST, gRPC & GraphQL" },
+        { "id": "queues", "title": "Message Queues" },
+        { "id": "pubsub", "title": "Pub/Sub & Events" },
+        { "id": "realtime", "title": "Real-time Updates" }
+      ]
+    },
+    {
+      "id": "reliability",
+      "num": "05",
+      "title": "Reliability",
+      "color": "observability",
+      "lessons": [
+        { "id": "redundancy", "title": "Redundancy & Failover" },
+        { "id": "rate-limiting", "title": "Rate Limiting" },
+        { "id": "timeouts-retries", "title": "Timeouts, Retries & Breakers" },
+        { "id": "observability", "title": "Observability" }
+      ]
+    },
+    {
+      "id": "architecture",
+      "num": "06",
+      "title": "Architecture",
+      "color": "network",
+      "lessons": [
+        { "id": "monolith-microservices", "title": "Monolith vs Microservices" },
+        { "id": "service-discovery", "title": "Service Discovery & Gateways" },
+        { "id": "sagas", "title": "Sagas & Distributed Transactions" },
+        { "id": "batch-stream", "title": "Batch & Stream Processing" }
+      ]
+    },
+    {
+      "id": "security",
+      "num": "07",
+      "title": "Security",
+      "color": "security",
+      "lessons": [
+        { "id": "authentication", "title": "Authentication" },
+        { "id": "authorization", "title": "Authorization" },
+        { "id": "encryption", "title": "Encryption & Secrets" }
+      ]
+    },
+    {
+      "id": "shipping",
+      "num": "08",
+      "title": "Shipping",
+      "color": "compute",
+      "lessons": [
+        { "id": "testing", "title": "Testing Strategy" },
+        { "id": "cicd", "title": "CI/CD & Deployments" }
+      ]
+    },
+    {
+      "id": "whole-systems",
+      "num": "09",
+      "title": "Whole Systems",
+      "color": "data",
+      "lessons": [
+        { "id": "hld-lld", "title": "High-Level vs Low-Level Design" },
+        { "id": "design-url-shortener", "title": "Design: URL Shortener" },
+        { "id": "design-news-feed", "title": "Design: News Feed" },
+        { "id": "design-chat", "title": "Design: Chat System" }
+      ]
+    }
+  ]
+}

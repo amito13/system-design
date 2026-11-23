@@ -41,7 +41,9 @@
     "cheatsheetsBody": "एक पेज के रेफ़रेंस और कैलकुलेटर, जिन्हें प्रिंट किया जा सकता है।",
     "milestone": "{{m}} में आएगा",
     "ready": "तैयार",
-    "playgroundLink": "कैनवास प्लेग्राउंड आज़माएँ: ब्लॉक खींचकर देखें"
+    "playgroundLink": "कैनवास प्लेग्राउंड आज़माएँ: ब्लॉक खींचकर देखें",
+    "continue": "जारी रखें",
+    "learnReady": "{{n}} पाठ तैयार"
   },
   "placeholder": {
     "building": "बन रहा है",
@@ -52,7 +54,79 @@
   "learn": {
     "title": "पाठ प्लेयर",
     "lesson": "पाठ",
-    "step": "चरण"
+    "step": "चरण",
+    "stepOf": "चरण {{n}} / {{total}}",
+    "lessonOf": "पाठ {{n}} / {{total}}",
+    "minutes": "{{n}} मिनट",
+    "steps": "{{n}} चरण",
+    "level": {
+      "beginner": "शुरुआती",
+      "intermediate": "मध्यम",
+      "advanced": "उन्नत"
+    },
+    "type": {
+      "setup": "शुरुआत",
+      "problem": "समस्या",
+      "solution": "समाधान",
+      "technique": "तकनीक",
+      "tradeoff": "समझौता",
+      "insight": "सीख",
+      "recap": "सारांश"
+    },
+    "callout": {
+      "insight": "मुख्य बात",
+      "warn": "ध्यान दें",
+      "tip": "जानने लायक",
+      "next": "आगे"
+    },
+    "whatChanged": "क्या बदला",
+    "back": "पीछे",
+    "next": "आगे",
+    "nextStep": "आगे: {{title}}",
+    "nextLesson": "अगला पाठ: {{title}}",
+    "finish": "कोर्स पर वापस",
+    "youllLearn": "आप सीखेंगे",
+    "inThisLesson": "इस पाठ में",
+    "course": "कोर्स",
+    "lessonsCount": "{{n}} पाठ",
+    "progress": "प्रगति",
+    "soon": "जल्द",
+    "completed": "पूरा हुआ",
+    "takeaways": "मुख्य बातें",
+    "quiz": "क्विज़ दें",
+    "openLab": "डिज़ाइन लैब में खोलें",
+    "lessonDone": "पाठ पूरा हुआ — बढ़िया।",
+    "shortcuts": "कीबोर्ड शॉर्टकट",
+    "shortcutHint": "चरण",
+    "replayHint": "दोबारा",
+    "pauseHint": "रोकें",
+    "moreHint": "और",
+    "toggleTree": "कोर्स की रूपरेखा",
+    "togglePanel": "चरण पैनल",
+    "focusMode": "फ़ोकस मोड",
+    "exitFocus": "फ़ोकस मोड से बाहर",
+    "showStep": "चरण {{n}} / {{total}} दिखाएँ",
+    "comingTitle": "यह पाठ लिखा जा रहा है",
+    "comingBody": "इसकी सामग्री माइलस्टोन M3 में आएगी। पहला पाठ अभी तैयार है।",
+    "startFirst": "पाठ 1 पर जाएँ",
+    "loading": "पाठ लोड हो रहा है…",
+    "glossary": "{{term}} का मतलब",
+    "resizeSheet": "चरण पैनल का आकार बदलें",
+    "keys": {
+      "steps": "अगला / पिछला चरण",
+      "pause": "रोकें / चलाएँ",
+      "replay": "ट्रैफ़िक दोबारा",
+      "focus": "फ़ोकस मोड",
+      "panels": "रूपरेखा / चरण पैनल",
+      "minimap": "मिनीमैप",
+      "text": "डायग्राम टेक्स्ट में",
+      "lock": "लेआउट लॉक",
+      "reset": "लेआउट रीसेट",
+      "undo": "मूव पूर्ववत",
+      "search": "खोज",
+      "help": "यह सूची"
+    },
+    "metrics": "लाइव मेट्रिक्स"
   },
   "practice": {
     "title": "अभ्यास"

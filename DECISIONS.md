@@ -47,3 +47,20 @@ Decisions made where the PRD was silent or had to be adjusted. Newest first with
 | D29 | **Page error boundary** around routes (resets on navigation). | One render error used to blank the whole app. |
 | D30 | **`#/playground`** route: a 4-step demo scene (1 → 20 blocks, ~130–150 packets) used to verify M1. Demo copy is English-only. It's reachable from Home and Ctrl/⌘ K. | PRD M1 DoD asks for "a demo scene". M2 replaces it with real lessons; the route can stay as a dev page. |
 | D31 | **Dev-only handle `window.__sc`** (clock, engine, React Flow instance, overrides, history), stripped from production builds. | Lets tests drive the canvas deterministically, e.g. in a background tab where `requestAnimationFrame` doesn't run. Playwright e2e (M9) will use it. |
+
+## M2 — Lesson player (2026-11-23)
+
+| # | Decision | Why |
+|---|---|---|
+| D32 | **Lessons are plain JSON** (`content/lessons/<id>.json`, no comments), validated by **zod + semantic checks in the test suite** (`npm run validate:content`, part of `npm test`). zod is never bundled into the app. | Vite imports JSON natively and code-splits each lesson (lesson 1 = 3 KB gz). CI catches every bad id, hop, anchor, overlap or glossary term before it ships. |
+| D33 | **`extends` is resolved at load time** by the same pure `resolveLesson()` the validator uses, not by a build script. | One code path for CI and runtime; no generated files to keep in sync. Cost is negligible (≈ 10 steps). |
+| D34 | **"What changed" is derived from the HUD** (previous step → this step, coloured by each metric's `better` direction, new metrics listed neutrally); authors add only extra lines (`changes: [{ text, tone }]`). | Removes a whole class of authoring mistakes: the list can never disagree with the HUD (AC-L3). |
+| D35 | **The step timeline lives at the top of the step panel**, not bottom-centre of the canvas. | Bottom-centre collides with the canvas toolbar whenever the outline and step panel are docked (≈ 750 px of free width at 1440). In the panel it also works unchanged in the phone sheet. |
+| D36 | **Canvas panels** (e.g. the recap's "Where the time went") are React Flow nodes: draggable, undoable, remembered as `panel:<id>`, following their anchor block unless moved. | PRD §6.6; reuses the M1 history/persistence path. |
+| D37 | **Key scoping:** the canvas handles keys only when focus is on a block or the pane; the lesson page handles ← → (mirrored in RTL), Space, R, M, T, L, Shift+R, F, [, ], ? everywhere else, and drives the canvas through a small `CanvasHandle` API. | Arrow keys mean "move block" on the canvas and "next step" elsewhere (PRD §6.2 vs §7.5). |
+| D38 | **Stepping uses `history.replaceState`** (`navigateReplace`). Every step is still a deep link; Back leaves the lesson instead of rewinding ten steps. | Normal reading should not fill the browser history. |
+| D39 | **Layout: docked panels ≥ 1200 px; step panel only 768–1199 (outline is a drawer); bottom sheet < 768.** Dock state is remembered in `sc:panels`. The camera's safe area is measured from the rail and docks. | PRD §5 breakpoints. |
+| D40 | **Finishing = reaching the recap step** (marks done once; confetti only the first time, never with reduced motion). Objectives tick when their `coveredAt` step is reached, or all at once if the lesson is done. | PRD §7.4; simple and predictable. |
+| D41 | **Glossary links need an explicit label for acronyms** (`[[dns|DNS]]`); `[[database]]` shows the id as written. | Keeps sentence casing in the author's hands. |
+| D42 | **Dimmed blocks fade only the block**, not the label. | A faded label failed WCAG contrast (found by axe in the lesson recap). |
+| D43 | Lesson text and curriculum titles are **English-only until M9**; all player chrome is translated (EN/HI). The loader is ready for per-lesson translation overlays. | PRD §11.3 ships Hindi lesson content later. |

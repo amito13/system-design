@@ -14,6 +14,7 @@ import { TopBar } from './shell/TopBar';
 import { useThemeController } from './theme/useThemeController';
 
 // The canvas engine (React Flow + packets) loads only when a canvas page opens (PRD §13 budget).
+const Learn = lazy(() => import('../pages/Learn').then((m) => ({ default: m.Learn })));
 const Playground = lazy(() =>
   import('../pages/Playground').then((m) => ({ default: m.Playground })),
 );
@@ -30,29 +31,16 @@ function useLanguageSync() {
   }, [lang]);
 }
 
-function renderRoute(route: Route, t: (k: string) => string): { title: string; page: ReactNode } {
-  const lesson = t('learn.lesson');
-  const step = t('learn.step');
+function renderRoute(
+  route: Route,
+  t: (k: string) => string,
+): { title: string | null; page: ReactNode } {
   switch (route.name) {
     case 'home':
       return { title: '', page: <Home /> };
     case 'learn':
-      return {
-        title: t('nav.learn'),
-        page: (
-          <SectionPlaceholder
-            section="learn"
-            details={
-              route.lessonId
-                ? [
-                    [lesson, route.lessonId],
-                    [step, String(route.step)],
-                  ]
-                : []
-            }
-          />
-        ),
-      };
+      // The lesson page sets its own, more specific title.
+      return { title: null, page: <Learn lessonId={route.lessonId} step={route.step} /> };
     case 'practice':
     case 'practice-review':
     case 'practice-lesson':
@@ -116,6 +104,7 @@ export function App() {
   const routeKey = window.location.hash;
 
   useEffect(() => {
+    if (title === null) return;
     document.title = title ? `${title} · ${APP_NAME}` : `${APP_NAME} — interactive system design`;
   }, [title]);
 

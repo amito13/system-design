@@ -10,6 +10,7 @@ import {
   Globe,
   HardDrive,
   KeyRound,
+  Laptop,
   Layers,
   ListOrdered,
   Lock,
@@ -40,6 +41,7 @@ export interface KindDef {
 export const CATALOG: Record<string, KindDef> = {
   users: { category: 'client', icon: Users, role: 'Users', size: 'lg' },
   browser: { category: 'client', icon: Monitor, role: 'Web client', size: 'md' },
+  laptop: { category: 'client', icon: Laptop, role: 'Your laptop', size: 'md' },
   mobile: { category: 'client', icon: Smartphone, role: 'Mobile client', size: 'sm' },
   dns: { category: 'network', icon: Globe, role: 'DNS resolver', size: 'md' },
   cdn: { category: 'network', icon: Cloud, role: 'CDN edge', size: 'md' },

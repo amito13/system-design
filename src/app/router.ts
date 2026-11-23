@@ -160,3 +160,11 @@ export function useRoute(): Route {
 export function navigate(to: string): void {
   if (window.location.hash !== to) window.location.hash = to;
 }
+
+/** Change the hash without adding a history entry (e.g. stepping through a lesson). */
+export function navigateReplace(to: string): void {
+  if (window.location.hash === to) return;
+  const url = `${window.location.pathname}${window.location.search}${to}`;
+  window.history.replaceState(window.history.state, '', url);
+  window.dispatchEvent(new HashChangeEvent('hashchange'));
+}

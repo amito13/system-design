@@ -4,6 +4,8 @@ import { NAV_ITEMS } from '../app/shell/navItems';
 import { Chip, Panel } from '../components/Panel';
 import { HeroScene } from '../components/HeroScene';
 import { SECTION_MILESTONE } from '../config';
+import { allLessons, authoredLessonIds, FIRST_LESSON_ID } from '../learn/data';
+import { useProgress } from '../store/progress';
 
 const SECTION_COLOR = {
   learn: 'var(--cat-compute)',
@@ -54,18 +56,7 @@ export function Home() {
         </Panel>
       </div>
 
-      <Panel className="mt-10 flex flex-col gap-3 p-5 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h2 className="text-xl font-semibold">{t('home.continueTitle')}</h2>
-          <p className="mt-1 text-ink-muted">{t('home.continueEmpty')}</p>
-        </div>
-        <a
-          href="#/learn/request-journey/1"
-          className="inline-flex h-10 shrink-0 items-center gap-2 self-start rounded-[10px] border border-line bg-surface-2 px-4 text-sm font-semibold text-ink transition-colors hover:border-accent sm:self-auto"
-        >
-          {t('home.start')} <ArrowRight size={16} aria-hidden="true" className="rtl:rotate-180" />
-        </a>
-      </Panel>
+      <ContinueCard />
 
       <h2 className="mt-12 text-2xl font-semibold">{t('home.sectionsTitle')}</h2>
       <ul className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -84,12 +75,71 @@ export function Home() {
               <span className="mt-4 font-display text-lg font-semibold">{t(labelKey)}</span>
               <span className="mt-1 flex-1 text-sm text-ink-muted">{t(`home.${section}Body`)}</span>
               <span className="mt-4">
-                <Chip>{t('home.milestone', { m: SECTION_MILESTONE[section] })}</Chip>
+                {section === 'learn' ? (
+                  <Chip tone="ok">{t('home.learnReady', { n: authoredLessonIds.size })}</Chip>
+                ) : (
+                  <Chip>{t('home.milestone', { m: SECTION_MILESTONE[section] })}</Chip>
+                )}
               </span>
             </a>
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+/** "Continue where you left off" (PRD §11.5, AC-L5). */
+function ContinueCard() {
+  const { t } = useTranslation();
+  const last = useProgress((s) => s.last);
+  const done = useProgress((s) => s.done);
+  const lesson = last ? allLessons.find((l) => l.id === last.lessonId) : undefined;
+  const doneCount = allLessons.filter((l) => done.includes(l.id)).length;
+  const href =
+    lesson && last ? `#/learn/${lesson.id}/${last.step}` : `#/learn/${FIRST_LESSON_ID}/1`;
+
+  return (
+    <Panel className="mt-10 flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0">
+        <h2 className="text-xl font-semibold">{t('home.continueTitle')}</h2>
+        {lesson && last ? (
+          <p className="mt-1 text-ink-muted">
+            <span className="font-mono text-xs">
+              {lesson.module.num}. {lesson.module.title}
+            </span>{' '}
+            · <span className="font-semibold text-ink">{lesson.title}</span> · {t('learn.step')}{' '}
+            {last.step}
+          </p>
+        ) : (
+          <p className="mt-1 text-ink-muted">{t('home.continueEmpty')}</p>
+        )}
+        <div className="mt-3 flex items-center gap-3">
+          <div
+            className="h-1.5 w-40 overflow-hidden rounded-full bg-surface-2"
+            role="progressbar"
+            aria-label={t('learn.progress')}
+            aria-valuemin={0}
+            aria-valuemax={allLessons.length}
+            aria-valuenow={doneCount}
+          >
+            <div
+              className="h-full rounded-full bg-accent"
+              style={{ width: `${(doneCount / allLessons.length) * 100}%` }}
+            />
+          </div>
+          <span className="tabular text-xs text-ink-muted">
+            {doneCount} / {allLessons.length}
+          </span>
+        </div>
+      </div>
+      <a
+        href={href}
+        className="inline-flex h-10 shrink-0 items-center gap-2 self-start rounded-[10px] bg-accent px-4 text-sm font-semibold text-accent-ink transition-transform hover:-translate-y-0.5 sm:self-auto"
+      >
+        {lesson ? t('home.continue') : t('home.start')}{' '}
+        <ArrowRight size={16} aria-hidden="true" className="rtl:rotate-180" />
+      </a>
+    </Panel>
   );
 }
