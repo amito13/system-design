@@ -26,6 +26,7 @@
   --warn: #b45309;
   --bad: #dc2626;
   --info: #7c3aed;
+  --guide: #db2777;
 
   /* Node categories (block top faces; sides are derived in the block component) */
   --cat-client: #cbd5e1;
@@ -71,6 +72,7 @@
   --warn: #fbbf24;
   --bad: #f87171;
   --info: #a78bfa;
+  --guide: #f472b6;
 
   --cat-client: #64748b;
   --cat-network: #f59e0b;

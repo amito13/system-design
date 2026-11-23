@@ -1,5 +1,6 @@
-import { useEffect, useRef, type ReactNode } from 'react';
+import { lazy, Suspense, useEffect, useRef, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
+import { ErrorBoundary } from '../components/ErrorBoundary';
 import { APP_NAME } from '../config';
 import i18n, { applyDocumentLanguage } from '../lib/i18n';
 import { Home } from '../pages/Home';
@@ -11,6 +12,15 @@ import { routeSection, useRoute, type Route } from './router';
 import { CommandDialog } from './shell/CommandDialog';
 import { TopBar } from './shell/TopBar';
 import { useThemeController } from './theme/useThemeController';
+
+// The canvas engine (React Flow + packets) loads only when a canvas page opens (PRD §13 budget).
+const Playground = lazy(() =>
+  import('../pages/Playground').then((m) => ({ default: m.Playground })),
+);
+
+function PageLoading() {
+  return <div className="min-h-[calc(100dvh-3.5rem)]" aria-busy="true" />;
+}
 
 function useLanguageSync() {
   const lang = usePrefs((s) => s.lang);
@@ -88,6 +98,8 @@ function renderRoute(route: Route, t: (k: string) => string): { title: string; p
     }
     case 'settings':
       return { title: t('nav.settings'), page: <Settings /> };
+    case 'playground':
+      return { title: t('nav.playground'), page: <Playground /> };
     case 'not-found':
       return { title: t('notFound.title'), page: <NotFound path={route.path} /> };
   }
@@ -132,7 +144,9 @@ export function App() {
       <div className="blueprint-bg" aria-hidden="true" />
       <TopBar section={routeSection(route)} />
       <main id="main" ref={mainRef} tabIndex={-1} className="relative z-10 pt-14 outline-none">
-        {page}
+        <ErrorBoundary resetKey={routeKey}>
+          <Suspense fallback={<PageLoading />}>{page}</Suspense>
+        </ErrorBoundary>
       </main>
       <CommandDialog />
     </>

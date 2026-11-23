@@ -17,6 +17,7 @@ export type Route =
   | { name: 'cheatsheets' }
   | { name: 'cheatsheet'; sheetId: string }
   | { name: 'settings' }
+  | { name: 'playground' }
   | { name: 'not-found'; path: string };
 
 export type Section = 'home' | 'learn' | 'practice' | 'lab' | 'cheatsheets' | 'settings' | null;
@@ -86,6 +87,8 @@ export function parseHash(hash: string): Route {
     }
     case 'settings':
       return parts.length === 1 ? { name: 'settings' } : notFound;
+    case 'playground':
+      return parts.length === 1 ? { name: 'playground' } : notFound;
     default:
       void c;
       return notFound;
@@ -136,6 +139,8 @@ export function href(route: Exclude<Route, { name: 'not-found' }>): string {
       return `#/cheatsheets/${e(route.sheetId)}`;
     case 'settings':
       return '#/settings';
+    case 'playground':
+      return '#/playground';
   }
 }
 

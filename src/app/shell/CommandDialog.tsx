@@ -1,5 +1,6 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import {
+  Boxes,
   Check,
   CornerDownLeft,
   House,
@@ -97,6 +98,14 @@ export function CommandDialog() {
         keywords: 'settings preferences',
         icon: Settings,
         run: go('#/settings'),
+      },
+      {
+        id: 'go-playground',
+        group: nav,
+        label: t('nav.playground'),
+        keywords: 'canvas playground demo drag',
+        icon: Boxes,
+        run: go('#/playground'),
       },
     ];
     for (const mode of ['light', 'dark', 'system', 'scheduled'] as ThemeMode[]) {

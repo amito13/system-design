@@ -7,8 +7,9 @@ An interactive system-design course on a live, draggable canvas. Full spec: [PRD
 | Milestone | State |
 |---|---|
 | **M0 Foundations** — tooling, tokens, fonts, Light/Dark/System/Scheduled themes (night at 20:00), app shell, routing, storage, i18n (EN + HI), Settings | ✅ Done |
-| M1 Canvas engine | Next |
-| M2–M9 | Not started |
+| **M1 Canvas engine** — draggable isometric blocks, live floating edges, packet animation, undo/redo, layout memory, snap + guides, minimap, touch gestures, keyboard + screen-reader support | ✅ Done — try it at `#/playground` |
+| M2 Lesson player | Next |
+| M3–M9 | Not started |
 
 ## Run it
 
@@ -45,12 +46,36 @@ src/
     theme/                 resolve.ts (pure theme logic), boot.ts (pre-paint script), useThemeController.ts
     shell/                 TopBar, MobileNav, LanguageMenu, ThemeToggle, CommandDialog, BrandMark
   components/              Panel, Chip, IsoBlock, HeroScene
-  pages/                   Home, Settings, SectionPlaceholder, NotFound
+  canvas/                  the canvas engine (M1)
+    CanvasStage.tsx        React Flow wrapper: steps, layout memory, drag/keyboard/touch, camera
+    geometry.ts            ports, edge routing, point-at-distance (shared by edges + packets)
+    flows.ts               pure packet simulation (hops, group routing, dwell, failures)
+    layout.ts              overrides, new-block placement, overlap nudge, guides, persistence
+    history.ts             undo/redo
+    clock.ts               one rAF loop per canvas; pause/speed; advance() for tests
+    PacketLayer.tsx        pooled SVG packets, written every frame without React
+    nodes/ edges/          isometric block, zone frame, floating data edge
+    demoScenes.ts          the 4-step playground scene
+  pages/                   Home, Settings, Playground, SectionPlaceholder, NotFound
   store/prefs.ts           theme, language, motion, panel preferences (zustand, persisted)
   lib/                     storage.ts (sc: keys, try/catch, export/import), i18n.ts, languages.ts
   i18n/{en,hi}/ui.json     UI strings
   styles/                  tokens.css (both themes), app.css (Tailwind mapping, base, background)
 ```
+
+## Canvas shortcuts (when the canvas has focus)
+
+| Keys | Action |
+|---|---|
+| Drag / long-press then drag (touch) | Move a block (snaps to 20; hold Alt to move freely) |
+| Arrow keys | Move the selected/focused block 20 (Shift = 100, Alt = 1); with nothing selected, pan |
+| Shift + drag on empty space | Select several blocks |
+| Ctrl/⌘ + Z, Ctrl/⌘ + Shift + Z | Undo / redo moves |
+| Shift + R | Reset layout (asks first, can be undone) |
+| `+` `-` `0` `1` | Zoom in / out / 100% / fit |
+| Space | Pause / play (hold Space and drag to pan) |
+| R · L · M · T | Replay traffic · lock layout · minimap · diagram as text |
+| Enter / Esc | Open / close the block's info card |
 
 ## Theme rules
 

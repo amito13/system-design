@@ -6,7 +6,8 @@
     "lab": "Design Lab",
     "cheatsheets": "Cheatsheets",
     "settings": "Settings",
-    "main": "Main"
+    "main": "Main",
+    "playground": "Canvas playground"
   },
   "header": {
     "skip": "Skip to content",
@@ -39,7 +40,8 @@
     "labBody": "A sandbox with a traffic simulator, failure injection and graded challenges.",
     "cheatsheetsBody": "One-page references and calculators you can print.",
     "milestone": "Arrives in {{m}}",
-    "ready": "Ready"
+    "ready": "Ready",
+    "playgroundLink": "Try the canvas playground: drag the blocks"
   },
   "placeholder": {
     "building": "Being built",
@@ -106,5 +108,82 @@
     "move": "move",
     "open": "open",
     "close": "close"
+  },
+  "canvas": {
+    "label": "Diagram canvas",
+    "roleDescription": "interactive diagram",
+    "toolbar": "Canvas tools",
+    "zoomIn": "Zoom in",
+    "zoomOut": "Zoom out",
+    "zoomReset": "Reset zoom to 100%",
+    "fit": "Fit to content",
+    "follow": "Auto-follow the step",
+    "undo": "Undo move",
+    "redo": "Redo move",
+    "resetLayout": "Reset layout",
+    "lock": "Lock layout",
+    "snap": "Snap to grid (hold Alt to drag freely)",
+    "minimap": "Minimap",
+    "asText": "Diagram as text",
+    "play": "Play",
+    "pause": "Pause",
+    "replay": "Replay traffic",
+    "speed": "Playback speed",
+    "resetTitle": "Reset this layout?",
+    "resetBody": "Every block in this lesson goes back to its original position. You can undo this.",
+    "resetConfirm": "Reset layout",
+    "close": "Close",
+    "load": "Load",
+    "connectedTo": "Connected to",
+    "connectedToList": "connected to {{list}}",
+    "moved": "Moved {{name}}",
+    "movedMany": "Moved {{count}} blocks",
+    "undone": "Move undone",
+    "redone": "Move redone",
+    "layoutReset": "Layout reset to the original positions",
+    "state": {
+      "idle": "idle",
+      "active": "active",
+      "busy": "busy",
+      "overloaded": "overloaded",
+      "down": "down",
+      "recovering": "recovering",
+      "highlighted": "highlighted",
+      "dimmed": "dimmed"
+    },
+    "algo": {
+      "roundRobin": "round robin",
+      "leastConn": "least connections",
+      "random": "random",
+      "hash": "hash"
+    },
+    "text": {
+      "components": "Components",
+      "connections": "Connections",
+      "traffic": "Traffic",
+      "loadPct": "{{pct}}% load",
+      "cut": "cut",
+      "async": "asynchronous",
+      "chosen": "the chosen node",
+      "oneOf": "one of {{list}} ({{algo}})",
+      "perSecond": "{{n}} per second"
+    }
+  },
+  "playground": {
+    "title": "Canvas playground",
+    "subtitle": "Milestone M1 demo: drag any block, pan, zoom, and step through.",
+    "step": "Step {{n}} of {{total}}",
+    "back": "Back",
+    "next": "Next",
+    "steps": "Steps",
+    "hint": "Drag blocks anywhere · Shift-drag to select many · Ctrl+Z undo · Space pause · T text view",
+    "fps": "Show FPS",
+    "expand": "Show step details",
+    "collapse": "Hide step details"
+  },
+  "error": {
+    "title": "This page hit a problem",
+    "body": "The rest of the app still works. Reloading usually fixes it.",
+    "reload": "Reload"
   }
 }

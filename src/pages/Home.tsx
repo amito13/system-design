@@ -37,6 +37,13 @@ export function Home() {
               <FlaskConical size={18} aria-hidden="true" /> {t('nav.lab')}
             </a>
           </div>
+          <a
+            href="#/playground"
+            className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent hover:underline"
+          >
+            {t('home.playgroundLink')}{' '}
+            <ArrowRight size={14} aria-hidden="true" className="rtl:rotate-180" />
+          </a>
         </div>
 
         <Panel

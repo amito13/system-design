@@ -21,6 +21,7 @@ describe('parseHash', () => {
     ['#/cheatsheets', { name: 'cheatsheets' }],
     ['#/cheatsheets/latency-numbers', { name: 'cheatsheet', sheetId: 'latency-numbers' }],
     ['#/settings', { name: 'settings' }],
+    ['#/playground', { name: 'playground' }],
   ])('%s', (hash, expected) => {
     expect(parseHash(hash)).toEqual(expected);
   });
